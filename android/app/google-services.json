@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "190605335530",
+    "project_id": "grandmaproject-bdb29",
+    "storage_bucket": "grandmaproject-bdb29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190605335530:android:7a4cee5cd5f056b0f37093",
+        "android_client_info": {
+          "package_name": "com.example.projectapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuVLIvNWOioufc5gJXkN1-qTJdSXGsSSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

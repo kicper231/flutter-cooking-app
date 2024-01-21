@@ -1,0 +1,35 @@
+name: auth_repository
+description: repo that handles auth and user
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
+  firebase_auth: ^4.16.0
+  firebase_core: ^2.24.2
+  cloud_firestore: ^4.9.2
+  google_sign_in: ^6.1.0
+  # meta: ^1.8.0
+  #  flutter_lints: ^2.0.0
+  shared_preferences: ^2.2.0
+
+  dio: ^5.3.2
+  dartz: ^0.10.1
+  data_connection_checker_tv: ^0.3.5-nullsafety
+  provider: ^6.0.5
+  path_provider: ^2.1.0
+  firebase_ui_auth: ^1.12.1
+ 
+dev_dependencies:
+  firebase_auth_platform_interface: ^7.0.5
+  firebase_core_platform_interface: ^5.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.0
+  plugin_platform_interface: ^2.1.7
