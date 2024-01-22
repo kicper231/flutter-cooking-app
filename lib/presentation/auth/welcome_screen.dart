@@ -27,53 +27,38 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: screenHeight,
           child: Stack(
             children: [
               Align(
-                alignment: const AlignmentDirectional(20, -1.2),
-                child: Container(
-                  height: MediaQuery.of(context).size.width,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.tertiary),
-                ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(-2.7, -1.2),
-                child: Container(
-                  height: MediaQuery.of(context).size.width / 1.3,
-                  width: MediaQuery.of(context).size.width / 1.3,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(2.7, -1.2),
-                child: Container(
-                  height: MediaQuery.of(context).size.width / 1.3,
-                  width: MediaQuery.of(context).size.width / 1.3,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.primary),
-                ),
-              ),
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
-                child: Container(),
-              ),
-              Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.8,
+                  height: screenHeight / 1.1,
                   child: Column(
                     children: [
+                      Text(
+                        'Nazwa Mojej Aplikacji',
+                        style: TextStyle(
+                          fontSize: screenHeight * 0.04,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                      Center(
+                        child: Image(
+                          image: AssetImage('assets/food.png'),
+                          width: screenWidth * 0.66, // 80% of screen width
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 50.0),
                         child: TabBar(
