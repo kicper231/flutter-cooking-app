@@ -7,6 +7,7 @@ import 'package:projectapp/bussines/sign_in_bloc/sign_in_bloc.dart';
 import 'package:projectapp/bussines/sign_up_bloc/sign_up_bloc.dart';
 import 'package:projectapp/presentation/auth/sign_in_screen.dart';
 import 'package:projectapp/presentation/auth/sign_up_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -31,7 +32,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SizedBox(
           height: screenHeight,
@@ -43,22 +44,23 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   height: screenHeight / 1.1,
                   child: Column(
                     children: [
-                      Text(
-                        'Nazwa Mojej Aplikacji',
-                        style: TextStyle(
-                          fontSize: screenHeight * 0.04,
-                          fontWeight: FontWeight.bold,
+                      SizedBox(
+                        width: screenWidth * 0.5,
+                        child: Center(
+                          // Wstaw animację Lottie\
+
+                          child: Lottie.asset('assets/babcine_welcome.json'),
                         ),
                       ),
-                      SizedBox(height: screenHeight * 0.03),
-                      Center(
-                        child: Image(
-                          image: AssetImage('assets/food.png'),
-                          width: screenWidth * 0.66, // 80% of screen width
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.03),
+                      // SizedBox(height: screenHeight * 0.03),
+                      // Center(
+                      //   child: Image(
+                      //     image: AssetImage('assets/food.png'),
+                      //     width: screenWidth * 0.66, // 80% of screen width
+                      //     fit: BoxFit.contain,
+                      //   ),
+                      // ),
+                      SizedBox(height: screenHeight * 0.025),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 50.0),
                         child: TabBar(
