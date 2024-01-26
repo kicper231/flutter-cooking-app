@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:projectapp/myapp.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:projectapp/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:projectapp/simple_bloc_observer.dart';
+
 // import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 // import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
@@ -14,6 +18,25 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Locales.init(['en', 'fa', 'ps']);
   Bloc.observer = SimpleBlocObserver();
-  runApp(MyApp(FirebaseUserRepo()));
+  runApp(Localeapp(FirebaseUserRepo()));
+}
+
+class Localeapp extends StatelessWidget {
+  const Localeapp(this.userRepository, {super.key});
+  final UserRepository userRepository;
+  @override
+  Widget build(BuildContext context) {
+    return LocaleBuilder(
+      builder: (locale) => MaterialApp(
+        title: 'Flutter Locales',
+        localizationsDelegates: Locales.delegates,
+        supportedLocales: Locales.supportedLocales,
+        locale: locale,
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: MyApp(userRepository),
+      ),
+    );
+  }
 }

@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projectapp/bussines/sign_in_bloc/sign_in_bloc.dart';
+import 'package:projectapp/presentation/home/drawer.dart';
 
 // class HomeScreen extends StatelessWidget {
 //   const HomeScreen({super.key});
@@ -24,6 +26,15 @@ import 'package:projectapp/bussines/sign_in_bloc/sign_in_bloc.dart';
 //   }
 // }
 
+List<Recipe> recipes = [
+  Recipe(
+      id: "1",
+      title: "szarlotka po bretonskusdadasasda",
+      description: "Opis przepisu 1"),
+  Recipe(id: "2", title: "Przepis 1", description: "Opis przepisu 1"),
+  Recipe(id: "3", title: "Przepis 1", description: "Opis przepisu 1"),
+];
+
 class Recipe {
   final String id;
   final String title;
@@ -38,18 +49,16 @@ class RecipesPage extends StatefulWidget {
 }
 
 class _RecipesPageState extends State<RecipesPage> {
-  List<Recipe> recipes = [
-    Recipe(id: "1", title: "Przepis 1", description: "Opis przepisu 1"),
-    // Dodaj więcej przepisów
-  ];
   List<Recipe> filteredRecipes = [];
   bool isSearching = false;
   final TextEditingController _searchQueryController = TextEditingController();
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     filteredRecipes = recipes;
+    _focusNode = FocusNode();
     _searchQueryController.addListener(() {
       setState(() {
         if (_searchQueryController.text.isEmpty) {
@@ -70,219 +79,152 @@ class _RecipesPageState extends State<RecipesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 500), // Czas trwania animacji
-          color: isSearching
-              ? Color.fromRGBO(206, 147, 216, 1)
-              : Theme.of(context).primaryColor,
-          child: AppBar(
-            backgroundColor:
-                Colors.transparent, // Ustawienie tła AppBar na przezroczyste
-            elevation: 0, // Usunięcie cienia AppBar
-            title: isSearching
-                ? TextField(
-                    controller: _searchQueryController,
-                    style: TextStyle(),
-                    decoration: InputDecoration(
-                      hintText: "Szukaj przepisów...",
-                      hintStyle: TextStyle(color: Colors.white),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight + 10),
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 500), // Czas trwania animacji
+            color: isSearching
+                ? Color.fromRGBO(210, 107, 228, 1)
+                : Theme.of(context).primaryColor,
+            child: AppBar(
+              leadingWidth: 56,
+              titleSpacing: 0.0,
+
+              flexibleSpace: isSearching
+                  ? null
+                  : Image(
+                      image: AssetImage('assets/flower.png'),
+                      fit: BoxFit.cover,
                     ),
-                  )
-                : Center(
-                    child: Text(
-                      'Babcine',
-                      style: TextStyle(
-                        fontFamily: 'Wendy',
-                        fontSize: 26,
+
+              backgroundColor:
+                  Colors.transparent, // Ustawienie tła AppBar na przezroczyste
+              elevation: 0, // Usunięcie cienia AppBar
+              title: isSearching
+                  ? TextField(
+                      // autofocus: true,
+                      focusNode: _focusNode, // Użycie FocusNode
+                      controller: _searchQueryController,
+                      style: TextStyle(),
+                      decoration: InputDecoration(
+                        hintText: "Szukaj przepisów...",
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'Babcine',
+                        style: TextStyle(
+                          fontFamily: 'Wendy',
+                          fontSize: 30,
+                        ),
                       ),
                     ),
-                  ),
-            actions: <Widget>[
-              isSearching
-                  ? IconButton(
-                      icon: Icon(Icons.cancel),
-                      onPressed: () {
-                        setState(() {
-                          isSearching = false;
-                        });
-                      },
-                    )
-                  : IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        setState(() {
-                          isSearching = true;
-                        });
-                      },
-                    ),
-            ],
-          ),
-        ),
-      ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        itemCount: filteredRecipes.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      RecipeDetailScreen(recipeId: filteredRecipes[index].id),
-                ),
-              );
-            },
-            child: Card(
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Hero(
-                    tag: 'recipe${filteredRecipes[index].id}',
-                    child: CircleAvatar(
-                      child: Text(filteredRecipes[index].title[0]),
-                      radius: 40.0,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(filteredRecipes[index].title),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(CupertinoIcons.add),
-        onPressed: () {
-          // Logika przycisku FAB
-        },
-      ),
-      drawer: SafeArea(
-        child: Container(
-          child: ListTileTheme(
-            textColor: Colors.white,
-            iconColor: Colors.white,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  width: 128.0,
-                  height: 128.0,
-                  margin: const EdgeInsets.only(
-                    top: 24.0,
-                    bottom: 64.0,
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    color: Colors.black26,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image.asset(
-                    'assets/images/flutter_logo.png',
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: Icon(Icons.home),
-                  title: Text('Home'),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: Icon(Icons.account_circle_rounded),
-                  title: Text('Profile'),
-                ),
-                ListTile(
-                  onTap: () {
-                    context.read<SignInBloc>().add(const SignOutRequired());
-                  },
-                  leading: Icon(Icons.logout),
-                  title: Text('Logout'),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: Icon(Icons.settings),
-                  title: Text('Settings'),
-                ),
-                Spacer(),
-                DefaultTextStyle(
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white54,
-                  ),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 16.0,
-                    ),
-                    child: Text('Terms of Service | Privacy Policy'),
-                  ),
-                ),
+              actions: <Widget>[
+                isSearching
+                    ? IconButton(
+                        icon: Icon(Icons.cancel),
+                        onPressed: () {
+                          setState(() {
+                            isSearching = false;
+                            _focusNode.unfocus();
+                          });
+                        },
+                      )
+                    : IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          setState(() {
+                            isSearching = true;
+                            _focusNode.requestFocus();
+                          });
+                        },
+                      ),
               ],
             ),
           ),
         ),
-      ),
-    );
+        body: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 3,
+            mainAxisSpacing: 3,
+            childAspectRatio: 9 / 11,
+          ),
+          itemCount: filteredRecipes.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                context.push('/recipe/${filteredRecipes[index].id}');
+              },
+              child: Card(
+                color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 10),
+                    Hero(
+                      tag: 'recipe${filteredRecipes[index].id}',
+                      child: Image.asset("assets/food.png"),
+                    ),
+                    SizedBox(height: 10), // Odstęp między zdjęciem a tekstem
+                    Container(
+                      padding: const EdgeInsets.all(3.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      child: Text(
+                        filteredRecipes[index].description,
+                        maxLines: 1, // Zwiększenie liczby linii
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 11),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 7, top: 0, bottom: 10, right: 7),
+                      child: Text(
+                        filteredRecipes[index].title,
+                        textAlign: TextAlign.center,
+                        maxLines: 2, // Zwiększenie liczby linii dla tytułu
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(CupertinoIcons.add),
+          onPressed: () {
+            // createReciped(title: '69');
+            context.push('/recipeadd');
+          },
+        ),
+        drawer: Mydrawer());
+  }
+
+  Future createReciped({required String title}) async {
+    final mama =
+        FirebaseFirestore.instance.collection('recipes').doc('twojastara');
+    final json = {'description': 'opis', 'id': 2, 'title': title};
+    await mama.set(json);
   }
 
   @override
   void dispose() {
     _searchQueryController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 }
 
-class RecipeDetailScreen extends StatelessWidget {
-  final String recipeId;
-
-  // Przykładowa metoda do pobierania przepisu - na razie zwraca statyczne dane
-  Recipe getRecipeById(String id) {
-    // Tymczasowe przepisy - powinny być zastąpione danymi z bazy danych
-    List<Recipe> recipes = [
-      Recipe(id: '1', title: 'Przepis 1', description: 'Opis przepisu 1'),
-      // Dodaj więcej przepisów
-    ];
-    return recipes.firstWhere((recipe) => recipe.id == id,
-        orElse: () =>
-            Recipe(id: '0', title: 'Nie znaleziono', description: ''));
-  }
-
-  RecipeDetailScreen({Key? key, required this.recipeId}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final recipe = getRecipeById(recipeId);
-
-    return Scaffold(
-      appBar: AppBar(title: Text(recipe.title)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hero(
-              tag: 'recipe$recipeId',
-              child: CircleAvatar(
-                child: Text(recipe.title[0]), // pierwsza litera tytułu
-                radius: 50.0,
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(recipe.description),
-            // Dodaj więcej szczegółów o przepisie
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 // class RecipesPage extends StatefulWidget {
 //   @override
