@@ -7,7 +7,7 @@ class RecipeEntity {
   String description;
   String imageUrl;
   List<Map<String, dynamic>> ingredients;
-  List<Map<String, dynamic>> steps;
+  List<String> steps;
   DateTime createAt;
   MyUser myUser; // Dodane pole
 
@@ -42,7 +42,7 @@ class RecipeEntity {
       description: doc['description'] as String,
       imageUrl: doc['imageUrl'] as String,
       ingredients: doc['ingredients'] as List<Map<String, dynamic>>,
-      steps: doc['steps'] as List<Map<String, dynamic>>,
+      steps: doc['steps'] as List<String>,
       createAt: (doc['createAt'] as Timestamp).toDate(),
       myUser: MyUser.fromEntity(
           MyUserEntity.fromDocument(doc['myUser'])), // Dodane pole

@@ -37,7 +37,10 @@ class Localeapp extends StatelessWidget {
         supportedLocales: Locales.supportedLocales,
         locale: locale,
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: MyApp(userRepository, recipeRepository),
+        home: MyApp(
+          userRepository: userRepository,
+          recipeRepository: recipeRepository,
+        ),
       ),
     );
   }

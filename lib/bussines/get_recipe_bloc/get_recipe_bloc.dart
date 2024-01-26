@@ -9,14 +9,14 @@ part 'get_recipe_state.dart';
 class GetRecipeBloc extends Bloc<GetRecipeEvent, GetRecipeState> {
   final RecipeRepository _recipeRepository;
 
-  GetRecipeBloc({
-    required RecipeRepository recipeRepository,
-  })  : _recipeRepository = recipeRepository,
+  GetRecipeBloc({required RecipeRepository recipeRepository})
+      : _recipeRepository = recipeRepository,
         super(GetRecipeInitial()) {
     on<GetRecipes>((event, emit) async {
       emit(GetRecipeLoading());
       try {
-        List<Recipe> recipes = await _recipeRepository.getRecipes();
+        List<Recipe> recipes =
+            await _recipeRepository.getRecipesByUser(event.userId);
         emit(GetRecipeSuccess(recipes));
       } catch (_) {
         emit(GetRecipeFailure());

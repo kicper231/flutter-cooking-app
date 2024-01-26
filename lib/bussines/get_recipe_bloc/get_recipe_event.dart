@@ -7,4 +7,11 @@ abstract class GetRecipeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetRecipes extends GetRecipeEvent {}
+class GetRecipes extends GetRecipeEvent {
+  final String userId;
+
+  const GetRecipes(this.userId);
+
+  @override
+  List<Object> get props => [userId];
+}

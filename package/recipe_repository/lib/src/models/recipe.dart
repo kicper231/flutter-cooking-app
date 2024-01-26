@@ -8,7 +8,7 @@ class Recipe {
   String description;
   String imageUrl; // Dodane pole
   List<Map<String, dynamic>> ingredients; // Dodane pole
-  List<Map<String, dynamic>> steps; // Dodane pole
+  List<String> steps; // Dodane pole
   DateTime createAt;
   MyUser myUser;
 
@@ -40,7 +40,7 @@ class Recipe {
     String? description,
     String? imageUrl,
     List<Map<String, dynamic>>? ingredients,
-    List<Map<String, dynamic>>? steps,
+    List<String>? steps,
     DateTime? createAt,
     MyUser? myUser,
   }) {

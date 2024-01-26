@@ -1,9 +1,12 @@
+import 'package:auth_repository/auth_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:projectapp/bussines/authentication_bloc/authentication_bloc.dart';
 import 'package:projectapp/bussines/create_recipe_bloc/create_recipe_bloc.dart';
+import 'package:projectapp/bussines/my_user_bloc/my_user_bloc.dart';
 import 'package:projectapp/bussines/sign_in_bloc/sign_in_bloc.dart';
 import 'package:projectapp/presentation/home/addrecipe.dart';
 import 'package:projectapp/presentation/home/drawer.dart';
@@ -203,24 +206,31 @@ class _RecipesPageState extends State<RecipesPage> {
             );
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(CupertinoIcons.add),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return BlocProvider<CreateRecipeBloc>(
-                    create: (context) => CreateRecipeBloc(
-                      recipeRepository:
-                          context.read<FirebaseRecipeRepository>(),
+        floatingActionButton: BlocBuilder<MyUserBloc, MyUserState>(
+          builder: (context, state) {
+            if (state.status == MyUserStatus.success) {
+              return FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) =>
+                          BlocProvider<CreateRecipeBloc>(
+                        create: (context) => CreateRecipeBloc(
+                            recipeRepository: FirebaseRecipeRepository()),
+                        child: AddRecipe(state.user!),
+                      ),
                     ),
-                    child:
-                        AddRecipe(), // Załóżmy, że to jest Twój widok do dodawania przepisu
                   );
                 },
-              ),
-            );
+                child: const Icon(CupertinoIcons.add),
+              );
+            } else {
+              return const FloatingActionButton(
+                onPressed: null,
+                child: Icon(CupertinoIcons.clear),
+              );
+            }
           },
         ),
         drawer: Mydrawer());
