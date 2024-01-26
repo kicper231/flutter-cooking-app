@@ -23,7 +23,17 @@ class Recipe {
     required this.myUser,
   });
 
-  // Uaktualniona metoda copyWith
+  static final empty = Recipe(
+    recipeId: '',
+    title: '',
+    description: '',
+    imageUrl: '',
+    ingredients: [],
+    steps: [],
+    createAt: DateTime.now(),
+    myUser: MyUser.empty,
+  );
+
   Recipe copyWith({
     String? recipeId,
     String? title,

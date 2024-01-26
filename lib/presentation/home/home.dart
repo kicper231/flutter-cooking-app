@@ -3,8 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:projectapp/bussines/create_recipe_bloc/create_recipe_bloc.dart';
 import 'package:projectapp/bussines/sign_in_bloc/sign_in_bloc.dart';
+import 'package:projectapp/presentation/home/addrecipe.dart';
 import 'package:projectapp/presentation/home/drawer.dart';
+import 'package:recipe_repository/recipe_repository.dart';
 
 // class HomeScreen extends StatelessWidget {
 //   const HomeScreen({super.key});
@@ -203,8 +206,21 @@ class _RecipesPageState extends State<RecipesPage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(CupertinoIcons.add),
           onPressed: () {
-            // createReciped(title: '69');
-            context.push('/recipeadd');
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return BlocProvider<CreateRecipeBloc>(
+                    create: (context) => CreateRecipeBloc(
+                      recipeRepository:
+                          context.read<FirebaseRecipeRepository>(),
+                    ),
+                    child:
+                        AddRecipe(), // Załóżmy, że to jest Twój widok do dodawania przepisu
+                  );
+                },
+              ),
+            );
           },
         ),
         drawer: Mydrawer());

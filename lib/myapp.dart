@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:go_router/go_router.dart';
+import 'package:projectapp/bussines/create_recipe_bloc/create_recipe_bloc.dart';
+import 'package:projectapp/bussines/get_recipe_bloc/get_recipe_bloc.dart';
 import 'package:projectapp/bussines/my_user_bloc/my_user_bloc.dart';
 import 'package:projectapp/bussines/update_user_data_bloc/update_user_data_bloc_bloc.dart';
 import 'package:projectapp/presentation/home/addrecipe.dart';
 import 'package:projectapp/presentation/recipedails/recipedatails.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_repository/recipe_repository.dart';
 import 'bussines/authentication_bloc/authentication_bloc.dart';
 import 'package:projectapp/bussines/sign_in_bloc/sign_in_bloc.dart';
 import 'package:projectapp/presentation/auth/welcome_screen.dart';
@@ -37,8 +40,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyApp extends StatelessWidget {
   final UserRepository userRepository;
-
-  MyApp(this.userRepository, {super.key});
+  final RecipeRepository recipeRepository;
+  MyApp(this.userRepository, this.recipeRepository, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +66,15 @@ class MyApp extends StatelessWidget {
                 GoRoute(
                   path: 'recipeadd',
                   builder: (context, state) {
-                    // final recipeId = state.pathParameters['id']!;
-                    return (AddRecipe());
+                    return BlocProvider<CreateRecipeBloc>(
+                      create: (_) => CreateRecipeBloc(
+                        recipeRepository:
+                            context.read<FirebaseRecipeRepository>(),
+                      ),
+                      child: AddRecipe(),
+                    );
                   },
-                )
+                ),
               ]),
         ],
         redirect: (BuildContext context, GoRouterState state) {
@@ -94,11 +102,16 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               AuthenticationBloc(userRepository: userRepository),
         ),
+        RepositoryProvider<CreateRecipeBloc>(
+          create: (context) => CreateRecipeBloc(
+              recipeRepository:
+                  recipeRepository), // Załóżmy, że takie repozytorium istnieje
+        ),
         BlocProvider<SignInBloc>(
           create: (context) => SignInBloc(userRepository: userRepository),
         ),
         BlocProvider<UpdateUserDataBloc>(
-          create: (contex) =>
+          create: (context) =>
               UpdateUserDataBloc(userRepository: userRepository),
         ),
         BlocProvider<MyUserBloc>(
@@ -108,7 +121,21 @@ class MyApp extends StatelessWidget {
             ..add(GetMyUser(
                 myUserId: context.read<AuthenticationBloc>().state.user!.uid)),
         ),
+
+        BlocProvider<CreateRecipeBloc>(
+          create: (context) => CreateRecipeBloc(
+            recipeRepository: recipeRepository,
+          ),
+        ),
+        BlocProvider<GetRecipeBloc>(
+          create: (context) => GetRecipeBloc(
+            recipeRepository: recipeRepository,
+          ),
+        ),
+        // Dodaj więcej BlocProvider lub RepositoryProvider, jeśli potrzebujesz
       ],
+      // Tutaj reszta twojego MaterialApp
+
       child: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           router
