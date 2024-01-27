@@ -146,7 +146,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                                 // Zamknięcie okna dialogowego
                                 Navigator.of(dialogContext).pop();
                               },
-                            ),
+                            ), ////
                           ],
                         );
                       },
