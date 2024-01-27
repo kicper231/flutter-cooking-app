@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -13,34 +14,41 @@ import 'package:recipe_repository/recipe_repository.dart';
 // import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 // import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Locales.init(['en', 'fa', 'ps']);
-  Bloc.observer = SimpleBlocObserver();
-  runApp(Localeapp(FirebaseUserRepo(), FirebaseRecipeRepository()));
+
+  await EasyLocalization.ensureInitialized();
+
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en', 'US'),
+      child: Localeapp(FirebaseUserRepo(), FirebaseRecipeRepository()),
+    ),
+  );
 }
 
 class Localeapp extends StatelessWidget {
-  const Localeapp(this.userRepository, this.recipeRepository, {super.key});
   final UserRepository userRepository;
   final RecipeRepository recipeRepository;
+
+  Localeapp(this.userRepository, this.recipeRepository, {super.key});
+
   @override
   Widget build(BuildContext context) {
-    return LocaleBuilder(
-      builder: (locale) => MaterialApp(
-        title: 'Flutter Locales',
-        localizationsDelegates: Locales.delegates,
-        supportedLocales: Locales.supportedLocales,
-        locale: locale,
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home: MyApp(
-          userRepository: userRepository,
-          recipeRepository: recipeRepository,
-        ),
+    return MaterialApp(
+      title: 'Flutter Locales',
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: MyApp(
+        userRepository: userRepository,
+        recipeRepository: recipeRepository,
       ),
     );
   }

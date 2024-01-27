@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:projectapp/bussines/create_recipe_bloc/create_recipe_bloc.dart';
 import 'package:projectapp/bussines/get_recipe_bloc/get_recipe_bloc.dart';
 import 'package:projectapp/bussines/my_user_bloc/my_user_bloc.dart';
+import 'package:projectapp/bussines/recipe_bloc/recipe_bloc.dart';
 import 'package:projectapp/bussines/update_user_data_bloc/update_user_data_bloc_bloc.dart';
 import 'package:projectapp/presentation/home/addrecipe.dart';
 import 'package:projectapp/presentation/recipedails/recipedatails.dart';
@@ -58,7 +59,6 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<RecipeRepository>(
           create: (context) => recipeRepository,
         ),
-        // Tutaj dodaj inne potrzebne RepositoryProvider i BlocProvider
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -67,8 +67,9 @@ class MyApp extends StatelessWidget {
           colorScheme: const ColorScheme.light(
             background: Colors.white,
             onBackground: Colors.black,
-            primary: Color.fromRGBO(206, 147, 216, 1),
-            onPrimary: Colors.black,
+            // primary: Color.fromRGBO(206, 147, 216, 1),
+            primary: Color.fromARGB(255, 240, 203, 254),
+            onPrimary: Color.fromARGB(255, 255, 255, 255),
             secondary: Color.fromRGBO(244, 143, 177, 1),
             onSecondary: Colors.white,
             tertiary: Color.fromRGBO(255, 204, 128, 1),
@@ -89,6 +90,11 @@ class MyApp extends StatelessWidget {
                   BlocProvider(
                     create: (context) => UpdateUserDataBloc(
                       userRepository: userRepository,
+                    ),
+                  ),
+                  BlocProvider(
+                    create: (context) => RecipeBloc(
+                      recipeRepository: recipeRepository,
                     ),
                   ),
                   BlocProvider(

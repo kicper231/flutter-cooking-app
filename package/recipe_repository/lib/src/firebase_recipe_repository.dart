@@ -1,7 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import '../recipe_repository.dart';
 
 class FirebaseRecipeRepository implements RecipeRepository {
@@ -44,6 +45,34 @@ class FirebaseRecipeRepository implements RecipeRepository {
               .map(
                   (e) => Recipe.fromEntity(RecipeEntity.fromDocument(e.data())))
               .toList());
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> uploadPicture(String file, String recipeId) async {
+    try {
+      File imageFile = File(file);
+
+      Reference firebaseStoreRef = FirebaseStorage.instance
+          .ref()
+          .child("$recipeId/RP/${recipeId}_photo");
+      await firebaseStoreRef.putFile(imageFile);
+      String url = await firebaseStoreRef.getDownloadURL();
+      //  await RecipeCollection.doc(recipeId).update({'picture': url});
+      return url;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteRecipe(String recipeId) async {
+    try {
+      await RecipeCollection.doc(recipeId).delete();
     } catch (e) {
       log(e.toString());
       rethrow;

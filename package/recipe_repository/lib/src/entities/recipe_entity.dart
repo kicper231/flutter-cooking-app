@@ -4,16 +4,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class RecipeEntity {
   String recipeId;
   String title;
+  String category;
   String description;
   String imageUrl;
-  List<Map<String, dynamic>> ingredients;
-  List<String> steps;
+  List<dynamic> ingredients;
+  List<dynamic> steps;
   DateTime createAt;
   MyUser myUser; // Dodane pole
 
   RecipeEntity({
     required this.recipeId,
     required this.title,
+    required this.category,
     required this.description,
     required this.imageUrl,
     required this.ingredients,
@@ -26,6 +28,7 @@ class RecipeEntity {
     return {
       'recipeId': recipeId,
       'title': title,
+      'category': category,
       'description': description,
       'imageUrl': imageUrl,
       'ingredients': ingredients,
@@ -39,10 +42,11 @@ class RecipeEntity {
     return RecipeEntity(
       recipeId: doc['recipeId'] as String,
       title: doc['title'] as String,
+      category: doc['category'] as String,
       description: doc['description'] as String,
       imageUrl: doc['imageUrl'] as String,
-      ingredients: doc['ingredients'] as List<Map<String, dynamic>>,
-      steps: doc['steps'] as List<String>,
+      ingredients: doc['ingredients'] as List<dynamic>,
+      steps: doc['steps'] as List<dynamic>,
       createAt: (doc['createAt'] as Timestamp).toDate(),
       myUser: MyUser.fromEntity(
           MyUserEntity.fromDocument(doc['myUser'])), // Dodane pole
@@ -53,6 +57,7 @@ class RecipeEntity {
   List<Object?> get props => [
         recipeId,
         title,
+        category,
         description,
         imageUrl,
         ingredients,
@@ -66,6 +71,7 @@ class RecipeEntity {
     return '''RecipeEntity: {
       recipeId: $recipeId,
       title: $title,
+      category: $category,
       description: $description,
       imageUrl: $imageUrl,
       ingredients: $ingredients,

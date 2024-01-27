@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -185,14 +186,11 @@ class _MydrawerState extends State<Mydrawer> {
                       child: Column(
                         children: [
                           ListTile(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
                             leading: Icon(Icons.home),
-                            title: Text('Home'),
-                          ),
-                          ListTile(
-                            onTap: () {},
-                            leading: Icon(Icons.account_circle_rounded),
-                            title: Text('Profile'),
+                            title: Text('home'.tr()),
                           ),
                           ListTile(
                             onTap: () {
@@ -202,7 +200,7 @@ class _MydrawerState extends State<Mydrawer> {
                                       builder: (_) => SettingScreen()));
                             },
                             leading: Icon(Icons.settings),
-                            title: Text('Language Settings'),
+                            title: Text('language_settings'.tr()),
                           ),
                           ListTile(
                             onTap: () {
@@ -211,7 +209,7 @@ class _MydrawerState extends State<Mydrawer> {
                                   .add(const SignOutRequired());
                             },
                             leading: Icon(Icons.logout),
-                            title: Text('Logout'),
+                            title: Text('logout'.tr()),
                           ),
                           Spacer(),
                           DefaultTextStyle(
@@ -223,7 +221,8 @@ class _MydrawerState extends State<Mydrawer> {
                               margin: const EdgeInsets.symmetric(
                                 vertical: 16.0,
                               ),
-                              child: Text('Terms of Service | Privacy Policy'),
+                              child:
+                                  Text('terms_of_service_privacy_policy'.tr()),
                             ),
                           )
                         ],
@@ -251,33 +250,28 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: LocaleText('localization'),
+        title: Text('settings'.tr()), // Przykład użycia tłumaczenia
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: <Widget>[
             ListTile(
-              onTap: () => Locales.change(context, 'en'),
-              //   title: LocaleText('english'),
+              onTap: () => context.setLocale(Locale('en', 'US')),
+              title: Text('english'.tr()),
               leading: Icon(Icons.language),
             ),
             Divider(),
             ListTile(
-              onTap: () => Locales.change(context, 'ps'),
-              //     title: LocaleText('pashto'),
-              leading: Icon(Icons.language),
-            ),
-            Divider(),
-            ListTile(
-              onTap: () => Locales.change(context, 'fa'),
-              title: LocaleText('farsi'),
+              onTap: () => context
+                  .setLocale(Locale('de', 'DE')), // Ustawienie niemieckiego
+              title: Text('german'.tr()), // Tłumaczenie na niemiecki
               leading: Icon(Icons.language),
             ),
             Divider(),
             ListTile(
               title: Text(
-                  'Current Locale: ${Locales.currentLocale(context)!.languageCode}'),
+                  'current_locale'.tr(args: [context.locale.languageCode])),
             ),
           ],
         ),

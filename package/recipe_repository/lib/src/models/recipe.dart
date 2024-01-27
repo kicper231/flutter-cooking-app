@@ -1,14 +1,16 @@
 import 'package:auth_repository/auth_repository.dart';
+import 'package:flutter/foundation.dart';
 
 import '../entities/entities.dart';
 
 class Recipe {
   String recipeId;
-  String title; // Dodane pole
+  String title;
+  String category;
   String description;
-  String imageUrl; // Dodane pole
-  List<Map<String, dynamic>> ingredients; // Dodane pole
-  List<String> steps; // Dodane pole
+  String imageUrl;
+  List<dynamic> ingredients;
+  List<dynamic> steps;
   DateTime createAt;
   MyUser myUser;
 
@@ -16,6 +18,7 @@ class Recipe {
     required this.recipeId,
     required this.title,
     required this.description,
+    required this.category,
     required this.imageUrl,
     required this.ingredients,
     required this.steps,
@@ -26,6 +29,7 @@ class Recipe {
   static final empty = Recipe(
     recipeId: '',
     title: '',
+    category: '',
     description: '',
     imageUrl: '',
     ingredients: [],
@@ -38,15 +42,17 @@ class Recipe {
     String? recipeId,
     String? title,
     String? description,
+    String? category,
     String? imageUrl,
-    List<Map<String, dynamic>>? ingredients,
-    List<String>? steps,
+    List<dynamic>? ingredients,
+    List<dynamic>? steps,
     DateTime? createAt,
     MyUser? myUser,
   }) {
     return Recipe(
       recipeId: recipeId ?? this.recipeId,
       title: title ?? this.title,
+      category: category ?? this.category,
       description: description ?? this.description,
       imageUrl: imageUrl ?? this.imageUrl,
       ingredients: ingredients ?? this.ingredients,
@@ -60,6 +66,7 @@ class Recipe {
     return RecipeEntity(
       recipeId: recipeId,
       title: title,
+      category: category,
       description: description,
       imageUrl: imageUrl,
       ingredients: ingredients,
@@ -73,6 +80,7 @@ class Recipe {
     return Recipe(
       recipeId: entity.recipeId,
       title: entity.title,
+      category: entity.category,
       description: entity.description,
       imageUrl: entity.imageUrl,
       ingredients: entity.ingredients,
@@ -87,6 +95,7 @@ class Recipe {
     return '''Recipe: {
       recipeId: $recipeId,
       title: $title,
+      category: $category,
       description: $description,
       imageUrl: $imageUrl,
       ingredients: $ingredients,
