@@ -154,7 +154,7 @@ class _RecipesPageState extends State<RecipesPage> {
             ],
           ),
         ),
-      ), // Twoja logika AppBar,
+      ),
       body: BlocListener<GetRecipeBloc, GetRecipeState>(
         listener: (context, state) {
           if (state is GetRecipeSuccess) {
@@ -195,7 +195,6 @@ class _RecipesPageState extends State<RecipesPage> {
                   ),
                 ).then((isUpdated) {
                   if (isUpdated != null && isUpdated == true) {
-                    // Użytkownik dodał przepis, odśwież listę przepisów
                     BlocProvider.of<GetRecipeBloc>(context)
                         .add(GetRecipes(state.user!.userId));
                   }
@@ -211,7 +210,7 @@ class _RecipesPageState extends State<RecipesPage> {
             );
           }
         },
-      ), // Twój FloatingActionButton,
+      ),
       drawer: Mydrawer(),
     );
   }
@@ -239,7 +238,6 @@ class _RecipesPageState extends State<RecipesPage> {
                       )),
             ).then((isUpdated) {
               if (isUpdated != null && isUpdated == true) {
-                // Użytkownik dodał przepis, odśwież listę przepisów
                 String? userId =
                     context.read<AuthenticationBloc>().state.user?.uid;
                 if (userId != null) {

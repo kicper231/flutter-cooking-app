@@ -30,7 +30,6 @@ class _MydrawerState extends State<Mydrawer> {
       child: BlocBuilder<MyUserBloc, MyUserState>(
         builder: (context, state) {
           if (state.status == MyUserStatus.loading) {
-            // Wyświetl pasek ładowania, gdy status to loading
             return Center(child: CircularProgressIndicator());
           } else if (state.status == MyUserStatus.success) {
             return Column(
@@ -39,11 +38,9 @@ class _MydrawerState extends State<Mydrawer> {
               children: [
                 Container(
                   height: 200,
-                  color: Theme.of(context).primaryColor, // Kolor tła kontenera
+                  color: Theme.of(context).primaryColor,
                   child: Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Wyśrodkowanie zawartości
-                    // mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
                         height: 40,
@@ -96,7 +93,7 @@ class _MydrawerState extends State<Mydrawer> {
                                 }
                               },
                               child: CircleAvatar(
-                                radius: 50.0, // Promień okręgu
+                                radius: 50.0,
                                 backgroundColor: Colors.black26,
                                 child: ClipOval(
                                   child: Image.network(
@@ -173,13 +170,9 @@ class _MydrawerState extends State<Mydrawer> {
                     ],
                   ),
                 ),
-
-                // const SizedBox(width: 10),
-                //  Text("Welcome ${state.user!.name}"),
-
                 Expanded(
                   child: Container(
-                    color: Colors.white, // Ustawienie białego koloru tła
+                    color: Colors.white,
                     child: ListTileTheme(
                       textColor: Colors.black,
                       iconColor: Colors.black,
@@ -240,17 +233,12 @@ class _MydrawerState extends State<Mydrawer> {
   }
 }
 
-//  GestureDetector(
-//                   onTap: () async {
-//
-//                   },
-
 class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('settings'.tr()), // Przykład użycia tłumaczenia
+        title: Text('settings'.tr()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -263,9 +251,8 @@ class SettingScreen extends StatelessWidget {
             ),
             Divider(),
             ListTile(
-              onTap: () => context
-                  .setLocale(Locale('de', 'DE')), // Ustawienie niemieckiego
-              title: Text('german'.tr()), // Tłumaczenie na niemiecki
+              onTap: () => context.setLocale(Locale('de', 'DE')),
+              title: Text('german'.tr()),
               leading: Icon(Icons.language),
             ),
             Divider(),

@@ -21,7 +21,7 @@ class RecipeEntity {
     required this.ingredients,
     required this.steps,
     required this.createAt,
-    required this.myUser, // Dodane pole
+    required this.myUser,
   });
 
   Map<String, Object?> toDocument() {
@@ -34,7 +34,7 @@ class RecipeEntity {
       'ingredients': ingredients,
       'steps': steps,
       'createAt': Timestamp.fromDate(createAt),
-      'myUser': myUser.toEntity().toDocument(), // Dodane pole
+      'myUser': myUser.toEntity().toDocument(),
     };
   }
 
@@ -48,8 +48,7 @@ class RecipeEntity {
       ingredients: doc['ingredients'] as List<dynamic>,
       steps: doc['steps'] as List<dynamic>,
       createAt: (doc['createAt'] as Timestamp).toDate(),
-      myUser: MyUser.fromEntity(
-          MyUserEntity.fromDocument(doc['myUser'])), // Dodane pole
+      myUser: MyUser.fromEntity(MyUserEntity.fromDocument(doc['myUser'])),
     );
   }
 
@@ -64,7 +63,7 @@ class RecipeEntity {
         steps,
         createAt,
         myUser
-      ]; // Dodane pole
+      ];
 
   @override
   String toString() {
@@ -77,7 +76,7 @@ class RecipeEntity {
       ingredients: $ingredients,
       steps: $steps,
       createAt: $createAt,
-      myUser: $myUser // Dodane pole
+      myUser: $myUser 
     }''';
   }
 }

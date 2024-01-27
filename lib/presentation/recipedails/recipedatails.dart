@@ -64,8 +64,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
     _scrollController = ScrollController(keepScrollOffset: true);
     recipe = widget.recipe;
     index = widget.index;
-    // recipe = recipes.firstWhere((element) => element.id == widget.recipeId);
-    // Jeżeli lista jest pusta lub nie znajdzie elementu, 'orElse' zwróci null
   }
 
   Color appBarColor = Colors.transparent;
@@ -87,7 +85,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
     }
   }
 
-  // fab to write review
   showFAB(TabController tabController) {
     int reviewTabIndex = 2;
     if (tabController.index == reviewTabIndex) {
@@ -102,7 +99,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
     return BlocListener<RecipeBloc, RecipeState>(
       listener: (context, state) {
         if (state is DeleteRecipeSuccess) {
-          Navigator.of(context).pop(true); // Powrót do poprzedniego ekranu
+          Navigator.of(context).pop(true);
         } else if (state is DeleteRecipeFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Failed to delete the recipe')));
@@ -120,7 +117,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                 IconButton(
                   icon: Icon(Icons.delete, color: Colors.white),
                   onPressed: () {
-                    // Otwarcie okna dialogowego
+                    final outerContext = context;
                     showDialog(
                       context: context,
                       builder: (BuildContext dialogContext) {
@@ -132,7 +129,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                             TextButton(
                               child: Text('Anuluj'),
                               onPressed: () {
-                                // Zamknięcie okna dialogowego bez wykonania akcji
                                 Navigator.of(dialogContext).pop();
                               },
                             ),
@@ -140,7 +136,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                               child: Text('Usuń'),
                               onPressed: () {
                                 // Wywołanie zdarzenia usuwania przepisu
-                                context
+                                outerContext
                                     .read<RecipeBloc>()
                                     .add(DeleteRecipe(recipe.recipeId));
                                 // Zamknięcie okna dialogowego
@@ -182,7 +178,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                             Image.network(recipe.imageUrl, fit: BoxFit.fill))));
               },
               child: Hero(
-                tag: '$index', // Unikalny identyfikator dla Hero
+                tag: '$index',
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: ClipRRect(
@@ -195,7 +191,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                 ),
               ),
             ),
-            // Section 2 - Recipe Info
+
             Container(
               width: MediaQuery.of(context).size.width,
               padding:
@@ -205,9 +201,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Recipe Calories and Time
                   Row(),
-                  // Recipe Title
                   Container(
                     margin: EdgeInsets.only(bottom: 12, top: 16),
                     child: Text(
@@ -219,7 +213,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                           fontFamily: 'inter'),
                     ),
                   ),
-                  // Recipe Description
                   Text(
                     '${recipe.description}',
                     style: TextStyle(
@@ -231,7 +224,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                 ],
               ),
             ),
-            // Tabbar ( Ingridients, Tutorial, Reviews )
+
             Container(
               color: Theme.of(context).primaryColor,
               height: 60,
@@ -258,11 +251,10 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                 ],
               ),
             ),
-            // IndexedStack based on TabBar index
+
             IndexedStack(
               index: _tabController.index,
               children: [
-                // Składniki
                 ListView.separated(
                   key: PageStorageKey<String>('uniqueListViewK22ey'),
                   itemCount: recipe.ingredients.length,
@@ -283,8 +275,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                     thickness: 1,
                   ),
                 ),
-
-                // Tutorials
                 ListView.separated(
                   key: PageStorageKey<String>('uniqueListViewK11ey'),
                   itemCount: recipe.steps.length,
@@ -299,7 +289,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                   separatorBuilder: (context, index) {
                     return Divider(
                       color: Theme.of(context).primaryColor,
-                      thickness: 1, // Ustaw grubość separatora
+                      thickness: 1,
                     );
                   },
                 ),

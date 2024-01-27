@@ -64,7 +64,7 @@ class _AddRecipeState extends State<AddRecipe> {
       'Obiad',
       'Kolacja',
       'Przekąska'
-    ]; // Dodaj swoje kategorie
+    ];
     //final createRecipeBloc = context.read<CreateRecipeBloc>();
     //final recipeRepository = context.read<FirebaseRecipeRepository>();
     return Scaffold(
@@ -125,16 +125,14 @@ class _AddRecipeState extends State<AddRecipe> {
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
-                      // Użyj obrazu z sieci, jeśli URL istnieje
-                      image: (recipe.imageUrl != '' &&
-                              recipe.imageUrl.isNotEmpty)
-                          ? DecorationImage(
-                              image: NetworkImage(recipe.imageUrl!),
-                              fit: BoxFit.fill,
-                            )
-                          : null, // Nie ustawiaj obrazu tła, jeśli URL nie istnieje
+                      image:
+                          (recipe.imageUrl != '' && recipe.imageUrl.isNotEmpty)
+                              ? DecorationImage(
+                                  image: NetworkImage(recipe.imageUrl!),
+                                  fit: BoxFit.fill,
+                                )
+                              : null,
                     ),
-                    // Wyświetl ikonę aparatu, jeśli URL obrazu nie istnieje
                     child: (recipe.imageUrl == '' || recipe.imageUrl.isEmpty)
                         ? Center(child: Icon(Icons.camera_alt, size: 50))
                         : null,

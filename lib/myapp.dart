@@ -117,13 +117,11 @@ class MyApp extends StatelessWidget {
                       recipeRepository: recipeRepository,
                     ),
                   ),
-                  // Tutaj dodaj inne potrzebne BlocProvider
                 ],
-                child:
-                    RecipesPage(), // Strona główna dla zalogowanych użytkowników
+                child: RecipesPage(),
               );
             } else {
-              return const WelcomeScreen(); // Ekran powitalny dla niezalogowanych użytkowników
+              return const WelcomeScreen();
             }
           },
         ),
